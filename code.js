@@ -1,8 +1,5 @@
-
-const line1 = document.getElementById("row1");
-const line2 = document.getElementById("row2");
-const line3 = document.getElementById("row3");
-const noLineOrColumn = 3;
+const matrix = document.getElementById("matrix");
+const noCells = 9;
 const winningCombinations = 8;
 const winerPos = [
                     [1, 2, 3], 
@@ -19,27 +16,30 @@ const player1 = "X";
 const player2 = "0";
 
 let val = 0;
-for (let i = 1; i <= noLineOrColumn; ++i) {
-    for (let j = 1; j <= noLineOrColumn; ++j) {
-        let currSquare = document.createElement("button");
-        ++val;
-        currSquare.value = val;
-        currSquare.id = val;
-        if (i == 1) {
-            line1.appendChild(currSquare); 
-        } else if (i == 2) {
-            line2.appendChild(currSquare);                
-        } else {
-            line3.appendChild(currSquare);
-        }
-        document.getElementById(currSquare.id).setAttribute("onclick", "pressPosition(value)");
-        document.getElementById(currSquare.id).innerHTML = val;
+for (let i = 1; i <= noCells; ++i) {
+    ++val;
+    let currSquare = document.createElement("button");
+    currSquare.value = val;
+    currSquare.id = val;
+    matrix.appendChild(currSquare); 
+    console.log(i % 3);
+    if (i % 3 === 0) {
+        matrix.appendChild(document.createElement("br"));
     }
+    document.getElementById(currSquare.id).setAttribute("onclick", "pressPosition(value)");
+    document.getElementById(currSquare.id).innerHTML = val;
 }   
+let button = matrix.appendChild(document.createElement("button"));
+button.id = "Reset";
+document.getElementById(button.id).setAttribute("onclick", "resetButton()");
+document.getElementById(button.id).innerHTML = "Reset";
+let message = matrix.appendChild(document.createElement("p"));
+message.id = "Message";
+document.getElementById(message.id).innerHTML = "Message";
 let press = 0;
 let player1Winner = 0;
 let player2Winner = 0;
-let startCheck = 5;
+let startCheck = 5; 
 
 function pressPosition(pressPos) {
     if (press % 2 == 0) {
@@ -80,7 +80,7 @@ function printMessage(player1Winner, player2Winner) {
     }
 }
 
-function ressetButton() {
+function resetButton() {
     for (let i = 1; i < maxPosition; ++i) {
         document.getElementById(i).innerHTML = i;
         document.getElementById("Message").innerHTML = "Message";

@@ -11,35 +11,38 @@ const winerPos = [
                     [1, 5, 9],
                     [3, 5, 7]
                 ]
-const maxPosition = 10;
 const player1 = "X";
 const player2 = "0";
 
-let val = 0;
-for (let i = 1; i <= noCells; ++i) {
-    ++val;
-    let currSquare = document.createElement("button");
-    currSquare.value = val;
-    currSquare.id = val;
-    matrix.appendChild(currSquare); 
-    console.log(i % 3);
-    if (i % 3 === 0) {
-        matrix.appendChild(document.createElement("br"));
-    }
-    document.getElementById(currSquare.id).setAttribute("onclick", "pressPosition(value)");
-    document.getElementById(currSquare.id).innerHTML = val;
-}   
-let button = matrix.appendChild(document.createElement("button"));
-button.id = "Reset";
-document.getElementById(button.id).setAttribute("onclick", "resetButton()");
-document.getElementById(button.id).innerHTML = "Reset";
-let message = matrix.appendChild(document.createElement("p"));
-message.id = "Message";
-document.getElementById(message.id).innerHTML = "Message";
 let press = 0;
-let player1Winner = 0;
-let player2Winner = 0;
 let startCheck = 5; 
+creatingGameBoard();
+
+function creatingGameBoard() {
+    let val = 0;
+    press = 0;
+    while (matrix.firstChild) {
+        matrix.removeChild(matrix.firstChild);
+    }
+    for (let i = 1; i <= noCells; ++i) {
+        ++val;
+        let currSquare = document.createElement("button");
+        currSquare.value = val;
+        currSquare.id = val;
+        matrix.appendChild(currSquare); 
+        if (i % 3 === 0) {
+            matrix.appendChild(document.createElement("br"));
+        }
+        document.getElementById(val).setAttribute("onclick", "pressPosition(value)");
+        document.getElementById(currSquare.id).innerHTML = "*";
+    }   
+    let button = matrix.appendChild(document.createElement("button"));
+    button.id = "Reset";
+    document.getElementById("Reset").setAttribute("onclick", "creatingGameBoard()");
+    document.getElementById("Reset").innerHTML = "Reset";
+    let message = matrix.appendChild(document.createElement("p"));
+    message.id = "Message";
+}
 
 function pressPosition(pressPos) {
     if (press % 2 == 0) {
@@ -63,30 +66,14 @@ function checkWinner(player) {
         if (document.getElementById(winerPos[i][0]).value === document.getElementById(winerPos[i][1]).value && 
             document.getElementById(winerPos[i][1]).value === document.getElementById(winerPos[i][2]).value) {
             if (player === player1) {
-                player1Winner = 1;
+                printMessage("Winner player 1");
             } else if (player === player2) {
-                player2Winner = 1;
+                printMessage("Winner player 2");
             } 
         }
     }
-    printMessage(player1Winner, player2Winner);
 }
 
-function printMessage(player1Winner, player2Winner) {
-    if (player1Winner) {
-        document.getElementById("Message").innerHTML = "Winner player 1";
-    } else if (player2Winner) {
-        document.getElementById("Message").innerHTML = "Winner player 2";
-    }
-}
-
-function resetButton() {
-    for (let i = 1; i < maxPosition; ++i) {
-        document.getElementById(i).innerHTML = i;
-        document.getElementById("Message").innerHTML = "Message";
-        document.getElementById(i).value = i;
-        player1Winner = 0;
-        player2Winner = 0;
-    }
-    press = 0;
+function printMessage(text) {
+    document.getElementById("Message").innerHTML = text;
 }
